@@ -1,0 +1,97 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1343\cocoasubrtf160
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;\red38\green38\blue38;\red38\green38\blue38;}
+\margl1440\margr1440\vieww14360\viewh12340\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\f0\b\fs24 \cf0 Phase II
+\b0 \
+\
+
+\i\b What is the difference between these two images?
+\i0\b0 \
+\
+	The difference between these two images is that image-1 has a version number, where as image-2 does not. This is because the script that attempts to set a version number for image-2 runs before the image-2 DOM element even exists. Resulting in an error \'93Uncaught TypeError: Cannot set property 'src' of null(\'85)\'94.\
+\
+
+\i\b What are the implications for how these images load?
+\i0\b0 \
+\
+	In the initial code both images has src attributes set with the same url, and also two scripts that attempt to set the same DOM elements with the same url along with a version number. This means this page is calling the same resource four times which could have a significant impact on performance and page load times.\
+\
+
+\i\b What can be done to make these images load correctly with a version number?
+\i0\b0 \
+\
+	I changed the code to load the images dynamically load the images along with a version:\
+\
+
+\i 	const imgURL = 'https://s-media-cache-ak0.pinimg.com/736x/4b/fe/44/4bfe443c1db09c0943de27164783e4fc.jpg'\
+  	const version = new Date()\
+\
+	  $('.mediatate-image').each((index, e) => \{\
+	    $(e).attr('src', `$\{imgURL\}?ver=$\{version.getTime() + index\}`)\
+	  \})
+\i0 \
+\
+	This allows for more code reusability and better performance as the number of resource calls is reduced to the amount of image elements. Also the code is smaller and easier to reason about.\
+\
+
+\b Phase II\
+\
+	
+\b0 View the bootstrap styling based on the design guide at {\field{\*\fldinst{HYPERLINK "https://alcatraz635.github.io/mediatate/"}}{\fldrslt https://alcatraz635.github.io/mediatate/}}
+\b \
+\
+Phase III\
+\
+	
+\b0 View slideshow implementation at {\field{\*\fldinst{HYPERLINK "https://alcatraz635.github.io/mediatate/"}}{\fldrslt https://alcatraz635.github.io/mediatate/slideshow-and-form}}
+\b \
+\
+\pard\tx720\pardeftab720
+
+\i \cf2 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Does where you load the CSS matter?  Please explain.\
+\
+
+\i0\b0 	Yes, it is best practice to load external style sheets or use style tags in the head of the your html files. This is due to performance issues and the blocking parallel downloads behavior of style tags. Meaning the content of the page will be unstyled until it reaches the style tags which leads to poor user experience.\
+\
+
+\b Phase IV\
+\
+
+\b0 	View experiment at {\field{\*\fldinst{HYPERLINK "https://alcatraz635.github.io/mediatate/test"}}{\fldrslt https://alcatraz635.github.io/mediatate/test}}
+\b \
+\
+
+\i Page Experiment\
+\
+	
+\i0\b0 The experiment for this page is to see if the placement of the slideshow effects the user\'92s interaction with it. In most website slideshows display important and/or featured data making it an important element of the page, so how if user interacts with it is an important feature to track. In the control group the slideshow is on top, in the variant it is at the bottom. Users may be more inclined to look through the slideshow after signing up their email. Regardless of the user, a JSON object keeps track of the user type, if the user scrolled to the bottom of the page, and if the user interacted with the slideshow. If they scrolled to the bottom and interacted with the slideshow it outputs the JSON object out to the console (in a real application it would be sent out to whatever analytics applications we are using or a database). This experiment could also be used to see if a user bothers to scroll to the bottom of the page after looking through the slideshow at the top.\
+\
+The code for this experiment is on lines 72 through 104 in main.js.\
+\
+
+\b Phase V\
+\
+
+\b0 	View the form on either {\field{\*\fldinst{HYPERLINK "https://alcatraz635.github.io/mediatate/"}}{\fldrslt \cf0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 https://alcatraz635.github.io/mediatate/}}\cf0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0  , {\field{\*\fldinst{HYPERLINK "https://alcatraz635.github.io/mediatate/test"}}{\fldrslt \cf3 \expnd0\expndtw0\kerning0
+https://alcatraz635.github.io/mediatate/test}}\cf3 \expnd0\expndtw0\kerning0
+, or {\field{\*\fldinst{HYPERLINK "https://alcatraz635.github.io/mediatate/"}}{\fldrslt \cf0 \kerning1\expnd0\expndtw0 https://alcatraz635.github.io/mediatate/slideshow-and-form}}\cf2 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \
+\
+	The email input is validated with a simple function using a RegExr:\
+\
+	const validateEmail = (email) => \{\
+	  const filter = /^[\\w\\-\\.\\+]+\\@[a-zA-Z0-9\\.\\-]+\\.[a-zA-z0-9]\{2,4\}$/\
+	  if (filter.test(email)) \{\
+ 	   return true;\
+	  \} else \{\
+	    return false;\
+	  \}\
+	\}\
+\
+	If it is invalid an alert is sent saying the input is invalid, and vice versa for a valid input. Shortly after a valid input both the form and alert are removed from the page so the user cannot input multiple emails.\
+\
+}
